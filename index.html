@@ -543,26 +543,34 @@ function setTheme(color) {
       transform: translateY(0);
     }
   }
-<!-- START FORM SECTION -->
-<div class="form-box-wrapper" style="width:100%; display:flex; justify-content:center; margin:2rem 0;">
-  <div class="form-box" style="background: rgba(10,10,30,0.85); padding:30px; border-radius:15px; box-shadow:0 0 20px #ff2a6d, 0 0 40px #ff2a6d inset; width:350px; text-align:center;">
+<!-- START INDEPENDENT FORM SECTION -->
+<div id="userInfoFormWrapper" style="width:100%; display:flex; justify-content:center; margin:2rem 0;">
+  <div style="background: rgba(10,10,30,0.85); padding:30px; border-radius:15px; box-shadow:0 0 20px #ff2a6d,0 0 40px #ff2a6d inset; width:350px; text-align:center; font-family:'Vazirmatn',sans-serif;">
     <h3 style="color:#ff2a6d; text-shadow:0 0 10px #ff2a6d,0 0 20px #ff2a6d; margin-bottom:20px;">فرم اطلاعات کاربر</h3>
-    <form id="infoForm" onsubmit="sendEmail(event)">
-      <input type="text" id="tlauncher" placeholder="آیدی TLauncher (الزامی)" required style="width:90%; padding:10px; margin:10px 0; border:none; border-radius:8px; outline:none; background: rgba(255,255,255,0.1); color:#fff; font-size:1rem;">
-      <input type="text" id="aternos" placeholder="آیدی Aternos (اختیاری)" style="width:90%; padding:10px; margin:10px 0; border:none; border-radius:8px; outline:none; background: rgba(255,255,255,0.1); color:#fff; font-size:1rem;">
-      <input type="text" id="nickname" placeholder="نیک‌نیم در بازی (الزامی)" required style="width:90%; padding:10px; margin:10px 0; border:none; border-radius:8px; outline:none; background: rgba(255,255,255,0.1); color:#fff; font-size:1rem;">
-      <button type="submit" style="padding:10px 20px; border:none; border-radius:10px; background:#ff2a6d; color:#fff; font-weight:bold; cursor:pointer; box-shadow:0 0 10px #ff2a6d,0 0 20px #ff2a6d inset; transition:0.3s; margin-top:10px;">ارسال اطلاعات</button>
+    <form id="userInfoForm" onsubmit="sendUserInfo(event)">
+      <input type="text" id="tlauncher" placeholder="آیدی TLauncher (الزامی)" required
+             style="width:90%; padding:10px; margin:10px 0; border:none; border-radius:8px; outline:none; background: rgba(255,255,255,0.1); color:#fff; font-size:1rem;">
+      <input type="text" id="aternos" placeholder="آیدی Aternos (اختیاری)"
+             style="width:90%; padding:10px; margin:10px 0; border:none; border-radius:8px; outline:none; background: rgba(255,255,255,0.1); color:#fff; font-size:1rem;">
+      <input type="text" id="nickname" placeholder="نیک‌نیم در بازی (الزامی)" required
+             style="width:90%; padding:10px; margin:10px 0; border:none; border-radius:8px; outline:none; background: rgba(255,255,255,0.1); color:#fff; font-size:1rem;">
+      <button type="submit"
+              style="padding:10px 20px; border:none; border-radius:10px; background:#ff2a6d; color:#fff; font-weight:bold; cursor:pointer; box-shadow:0 0 10px #ff2a6d,0 0 20px #ff2a6d inset; transition:0.3s; margin-top:10px;">
+        ارسال اطلاعات
+      </button>
     </form>
   </div>
 </div>
-<!-- END FORM SECTION -->
+<!-- END INDEPENDENT FORM SECTION -->
 
+<!-- EmailJS Script -->
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
 <script>
-  (function(){ emailjs.init("2UtU92GfpKNKLfs5y"); })();
+  (function(){ emailjs.init("2UtU92GfpKNKLfs5y"); })(); // Public Key
 
-  function sendEmail(e){
+  function sendUserInfo(e){
     e.preventDefault();
+
     const tlauncher = document.getElementById('tlauncher').value.trim();
     const aternos = document.getElementById('aternos').value.trim();
     const nickname = document.getElementById('nickname').value.trim();
@@ -581,13 +589,14 @@ function setTheme(color) {
       reply_to: "game77st@gmail.com"
     }).then(function(response){
       alert("اطلاعات شما با موفقیت ارسال شد ✅");
-      document.getElementById('infoForm').reset();
+      document.getElementById('userInfoForm').reset();
     }, function(error){
       console.log("خطای ارسال:", error);
       alert("ارسال اطلاعات موفق نبود ❌");
     });
   }
 </script>
+
 
 </body>
 </html>
