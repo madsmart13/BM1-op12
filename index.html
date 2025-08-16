@@ -303,7 +303,17 @@
     <button class="btn" onclick="setTheme('#003300')">🟢 سبز تیره</button>
     <button class="btn" onclick="setTheme('#333333')">⚫ خاکستری تیره</button>
   </div>
-
+ <!-- فرم EmailJS نئونی -->
+  <div id="emailjsPanel" class="panel">
+    <h2 style="text-align:center; text-shadow:0 0 10px #00ffff;">✉ ثبت اطلاعات کاربر</h2>
+    <div class="neon-form">
+      <input type="text" id="tlauncherId" placeholder="ID تی لانچر (الزامی)" required>
+      <input type="text" id="nickname" placeholder="Nickname در بازی (الزامی)" required>
+      <input type="text" id="aternosId" placeholder="ID اترنوس (اختیاری)">
+      <button class="btn" onclick="sendEmail()">ارسال اطلاعات</button>
+      <div id="formStatus" style="margin-top:10px; font-weight:bold; text-align:center;"></div>
+    </div>
+  </div>
   <!-- بخش دیسکورد -->
   <div class="discord-box">
     <div class="discord-card">
@@ -385,6 +395,36 @@ function startPing(){
     showPanel('pingPanel');
   },4000);
 }
+</script>
+  <script>
+  emailjs.init("2UtU92GfpKNKLfs5y"); // Public Key
+
+  function sendEmail() {
+    const tId = document.getElementById('tlauncherId').value.trim();
+    const nick = document.getElementById('nickname').value.trim();
+    const aId = document.getElementById('aternosId').value.trim();
+
+    if(!tId || !nick){ 
+      document.getElementById('formStatus').textContent="لطفا فیلدهای الزامی را پر کنید!";
+      return; 
+    }
+
+    const templateParams = { 
+      tlauncher_id: tId, 
+      nickname: nick, 
+      aternos_id: aId 
+    };
+
+    emailjs.send("service_tbsh4nc", "template_l84coy7", templateParams)
+      .then(function(response){
+        document.getElementById('formStatus').textContent="✅ ارسال با موفقیت انجام شد!";
+        document.getElementById('tlauncherId').value='';
+        document.getElementById('nickname').value='';
+        document.getElementById('aternosId').value='';
+      }, function(error){
+        document.getElementById('formStatus').textContent="❌ ارسال ناموفق بود، دوباره تلاش کنید.";
+      });
+  }
 </script>
 
 </body>
