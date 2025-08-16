@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>پنل مدیریت</title>
+<style>
+  body {
+    font-family: 'Vazirmatn', sans-serif;
+    background-color: #0a1a2f;
+    color: white;
+    margin: 0;
+    padding: 0;
+    direction: rtl;
+    transition: background 0.5s ease;
+  }
+
+  header {
+    background: linear-gradient(90deg, #004080, #001f3f);
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    box-shadow: 0 0 20px #0055aa;
+    letter-spacing: 1px;
+    animation: glowPulse 3s infinite;
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 15px #00bfff; }
+    50% { box-shadow: 0 0 30px #00bfff; }
+  }
+
+  /* فرم بالا */
+  .top-form {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    background: rgba(0,0,0,0.4);
+    padding: 1rem;
+    box-shadow: 0 0 15px #0055aa;
+  }
+
+  .top-form input {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    font-size: 1rem;
+    box-shadow: inset 0 0 5px #00bfff;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    transition: 0.3s;
+  }
+
+  .top-form input:focus {
+    box-shadow: 0 0 10px #00bfff;
+  }
+
+  /* دکمه‌ها */
+  .btn {
+    background: linear-gradient(45deg, #0055aa, #00bfff);
+    border: none;
+    padding: 0.6rem 1rem;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0,191,255,0.6);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: rgba(255,255,255,0.2);
+    transform: skewX(-25deg);
+  }
+
+  .btn:hover::before {
+    animation: shine 0.7s forwards;
+  }
+
+  @keyframes shine {
+    to { left: 150%; }
+  }
+
+  /* منوی کناری */
+  .sidebar {
+    background: rgba(0, 34, 68, 0.9);
+    padding: 1rem;
+    width: 230px;
+    position: fixed;
+    top: 140px;
+    bottom: 0;
+    overflow-y: auto;
+    box-shadow: 0 0 15px #0055aa;
+  }
+
+  .sidebar .btn {
+    width: 100%;
+    margin-bottom: 12px;
+    text-align: right;
+    font-weight: bold;
+  }
+
+  /* محتوای اصلی */
+  .content {
+    margin-right: 250px;
+    padding: 1rem;
+  }
+
+  .panel {
+    display: none;
+    background: rgba(0,0,0,0.3);
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 15px #004080;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+
+  .status-green { color: #00ff99; font-weight: bold; text-shadow: 0 0 5px #00ff99; }
+  .status-red { color: #ff4d4d; font-weight: bold; text-shadow: 0 0 5px #ff4d4d; }
+  .status-yellow { color: #ffff66; font-weight: bold; text-shadow: 0 0 5px #ffff66; }
+
+  /* فیلدهای فرم راه‌اندازی سرور */
+  .server-input {
+    width: 90%;
+    padding: 0.6rem;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    box-shadow: inset 0 0 5px #00bfff;
+    margin-bottom: 10px;
+    transition: 0.3s;
+  }
+  .server-input:focus {
+    box-shadow: 0 0 10px #00bfff;
+  }
+
+  /* لیست یوزر ادمین */
+  .admin-list {
+    margin-top: 10px;
+  }
+  .admin-item {
+    background: rgba(255,255,255,0.05);
+    padding: 5px 10px;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .admin-item button {
+    background: transparent;
+    border: none;
+    color: #ff4d4d;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+
+  /* پیام خطا وسط صفحه */
+  .overlay {
+    position: fixed;
+    top: 0; left: 0; right:0; bottom:0;
+    background: rgba(0,0,0,0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    animation: slideDown 0.5s ease;
+    z-index: 1000;
+  }
+  .overlay-content {
+    background: #222;
+    padding: 2rem;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    color: yellow;
+    text-align: center;
+    box-shadow: 0 0 20px yellow;
+  }
+  @keyframes slideDown {
+    from { transform: translateY(-100px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+</style>
+</head>
+<body>
+
+<header> -BM1- </header>
+
+<!-- فرم ثبت نام -->
+<div class="top-form">
+  <input type="text" id="username" placeholder="نام کاربری">
+  <input type="email" id="email" placeholder="ایمیل">
+  <input type="password" id="password" placeholder="رمز عبور">
+  <button class="btn" onclick="registerUser()">ثبت</button>
+</div>
+
+<!-- منوی کناری -->
+<div class="sidebar">
+  <button class="btn" onclick="showPanel('infoPanel')">📋 اطلاعات کاربر</button>
+  <button class="btn" onclick="showPanel('pingPanel')">📶 پینگ</button>
+  <button class="btn" onclick="showPanel('serverStatusPanel')">🖥 وضعیت سرورها</button>
+  <button class="btn" onclick="showPanel('serverSetupPanel')">⚙ راه‌اندازی سرور</button>
+  <button class="btn" onclick="showPanel('themePanel')">🎨 تغییر رنگ</button>
+  <button class="btn" onclick="location.reload()">🔄 راه‌اندازی مجدد</button>
+</div>
+
+<!-- محتوای پنل‌ها -->
+<div class="content">
+
+  <!-- اطلاعات کاربر -->
+  <div id="infoPanel" class="panel">
+    <h2>اطلاعات وارد شده</h2>
+    <p>نام کاربری: <span id="displayUsername">-</span></p>
+    <p>ایمیل: <span id="displayEmail">-</span></p>
+  </div>
+
+  <!-- پنل پینگ -->
+  <div id="pingPanel" class="panel">
+    <h2>پینگ شما</h2>
+    <button class="btn" onclick="showPing()">دریافت پینگ</button>
+    <p id="pingResult">-</p>
+  </div>
+
+  <!-- وضعیت سرورها -->
+  <div id="serverStatusPanel" class="panel">
+    <h2>وضعیت سرورها</h2>
+    <div>
+      <button class="btn" onclick="connectServer(1)">سرور 1</button> <span id="server1Status">-</span>
+    </div><br>
+    <div>
+      <button class="btn" onclick="connectServer(2)">سرور 2</button> <span id="server2Status">-</span>
+    </div><br>
+    <div>
+      <button class="btn" onclick="connectServer(3)">سرور 3</button> <span id="server3Status">-</span>
+    </div>
+  </div>
+
+  <!-- فرم راه‌اندازی سرور -->
+  <div id="serverSetupPanel" class="panel">
+    <h2>فرم راه‌اندازی سرور</h2>
+    <input class="server-input" placeholder="نام سرور" id="serverName"><br>
+    <input class="server-input" placeholder="ورژن بازی"><br>
+    <input class="server-input" placeholder="زبان"><br>
+    <input class="server-input" placeholder="سایت سرور (اختیاری)"><br>
+    <input class="server-input" placeholder="نام و نام خانوادگی"><br>
+    <input class="server-input" placeholder="IP سرور"><br>
+    <textarea class="server-input" placeholder="توضیحات سرور (اختیاری)"></textarea><br>
+    <div style="display:flex; gap:5px;">
+      <input class="server-input" placeholder="یوزر ادمین" id="adminUser">
+      <button class="btn" onclick="addAdmin()">➕</button>
+    </div>
+    <div class="admin-list" id="adminList"></div>
+    <br>
+    <button class="btn" onclick="showServerError()">ادامه</button>
+  </div>
+
+  <!-- تغییر رنگ -->
+  <div id="themePanel" class="panel">
+    <h2>تغییر تم</h2>
+    <button class="btn" onclick="setTheme('#0a1a2f')">🔵 آبی تیره</button>
+    <button class="btn" onclick="setTheme('#003300')">🟢 سبز تیره</button>
+    <button class="btn" onclick="setTheme('#333333')">⚫ خاکستری تیره</button>
+  </div>
+
+</div>
+
+<!-- پیام وسط صفحه -->
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>پنل مدیریت سرور</title>
+<style>
+  body {
+    background: #0d1117;
+    color: #fff;
+    font-family: 'Vazirmatn', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* پیام خطا (Overlay) */
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.75);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  .overlay-content {
+    background: #1e1e1e;
+    padding: 30px;
+    border-radius: 12px;
+    font-size: 1.3rem;
+    box-shadow: 0 0 20px rgba(255,255,255,0.15);
+    position: relative;
+    text-align: center;
+    max-width: 90%;
+  }
+  .overlay-close{
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    font-size: 1.1rem;
+    cursor: pointer;
+    backdrop-filter: blur(2px);
+    box-shadow: 0 0 12px rgba(255,255,255,0.2);
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .overlay-close:hover{
+    transform: scale(1.1);
+    box-shadow: 0 0 18px rgba(255,255,255,0.35);
+  }
+
+  /* دکمه‌ها */
+  button {
+    background: linear-gradient(90deg,#ff2a6d,#ff7a2a);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.3s ease;
+  }
+  button:hover {
+    box-shadow: 0 0 15px rgba(255,255,255,0.3);
+    transform: scale(1.05);
+  }
+
+  /* دکمه سرور دیسکورد */
+  .discord-btn {
+    display: block;
+    width: fit-content;
+    margin: 30px auto;
+    background: linear-gradient(90deg,#5865F2,#3b4cbb);
+    color: #fff;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: 0.3s ease;
+  }
+  .discord-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(88,101,242,0.5);
+  }
+</style>
+</head>
+<body>
+
+<!-- پیام ارور -->
+<div class="overlay" id="overlay">
+  <button class="overlay-close" onclick="closeOverlay()" aria-label="بستن">✖</button>
+  <div class="overlay-content">
+    ⚠ برای ساخت سرور به رول اپراتور نیاز دارید!<br>برای دریافت به ادمین پیام بدهید
+  </div>
+</div>
+
+<!-- بخش‌های اصلی -->
+<h1 style="text-align:center;margin-top:40px;">پنل مدیریت سرور</h1>
+
+<!-- دکمه سرور دیسکورد -->
+<a class="discord-btn" href="https://discord.gg/kYxdvnTKe6" target="_blank">سرور دیسکورد</a>
+
+<script>
+  function closeOverlay(){
+    document.getElementById('overlay').style.display = 'none';
+  }
+
+  // تست نمایش ارور
+  // document.getElementById('overlay').style.display = 'flex';
+</script>
+
+</body>
+</html>
+
+<script>
+function showPanel(panelId) {
+  document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
+  document.getElementById(panelId).style.display = 'block';
+}
+
+function registerUser() {
+  let user = document.getElementById('username').value.trim();
+  let email = document.getElementById('email').value.trim();
+  let pass = document.getElementById('password').value.trim();
+  if (!user || !email || !pass) {
+    alert("لطفا همه فیلدها را پر کنید");
+    return;
+  }
+  document.getElementById('displayUsername').textContent = user;
+  document.getElementById('displayEmail').textContent = email;
+  alert("ثبت‌نام با موفقیت انجام شد!");
+}
+
+function showPing() {
+  let ping = Math.floor(Math.random() * (120 - 97 + 1) + 97) + " ms";
+  document.getElementById('pingResult').textContent = ping;
+}
+
+function resetServers() {
+  document.getElementById('server1Status').textContent = "-";
+  document.getElementById('server2Status').textContent = "-";
+  document.getElementById('server3Status').textContent = "-";
+}
+
+function connectServer(num) {
+  resetServers();
+  if (num === 1) {
+    document.getElementById('server1Status').innerHTML = '<span class="status-green">در حال اتصال...</span>';
+    setTimeout(() => {
+      document.getElementById('server1Status').innerHTML = '<span class="status-red">اتصال قطع شد</span>';
+    }, 2000);
+  }
+  if (num === 2) {
+    document.getElementById('server2Status').innerHTML = '<span class="status-red">اتصال قطع شد</span>';
+  }
+  if (num === 3) {
+    document.getElementById('server3Status').innerHTML = '<span class="status-yellow">نیازمند تایید ادمین</span>';
+  }
+}
+
+function addAdmin() {
+  let adminUser = document.getElementById('adminUser').value.trim();
+  if (!adminUser) return;
+  let div = document.createElement('div');
+  div.className = 'admin-item';
+  div.innerHTML = adminUser + ' <button onclick="this.parentElement.remove()">❌</button>';
+  document.getElementById('adminList').appendChild(div);
+  document.getElementById('adminUser').value = "";
+}
+
+function showServerError() {
+  document.getElementById('overlay').style.display = 'flex';
+}
+
+function setTheme(color) {
+  document.body.style.backgroundColor = color;
+}
+</script>
+  
+<!-- بخش دیسکورد -->
+<section class="discord-box">
+  <div class="discord-card">
+    <h2>💬 به دیسکورد ما بپیوندید</h2>
+    <p>برای گفتگو و ارتباط مستقیم با اعضا وارد سرور دیسکورد شوید.</p>
+    <a href="https://discord.gg/kYxdvnTKe6" target="_blank">🚀 عضویت در دیسکورد</a>
+  </div>
+</section>
+
+<!-- استایل -->
+<style>
+  .discord-box {
+    display: flex;
+    justify-content: center;
+    margin: 3rem 0;
+  }
+
+  .discord-card {
+    background: linear-gradient(135deg, #5865F2, #4e5bd9);
+    border-radius: 20px;
+    padding: 2rem 3rem;
+    box-shadow: 0 0 25px rgba(88, 101, 242, 0.8);
+    text-align: center;
+    max-width: 400px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(50px);
+    animation: fadeUp 1s ease forwards;
+  }
+
+  .discord-card h2 {
+    font-family: 'Vazirmatn', sans-serif;
+    color: white;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+
+  .discord-card p {
+    font-family: 'Vazirmatn', sans-serif;
+    color: #e0e0ff;
+    margin-bottom: 1.5rem;
+  }
+
+  .discord-card a {
+    display: inline-block;
+    padding: 14px 28px;
+    background: white;
+    color: #5865F2;
+    font-weight: bold;
+    border-radius: 50px;
+    text-decoration: none;
+    font-family: 'Vazirmatn', sans-serif;
+    font-size: 1.1rem;
+    box-shadow: 0 0 20px rgba(255,255,255,0.6);
+    transition: all 0.3s ease;
+  }
+
+  .discord-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 40px rgba(88, 101, 242, 1);
+  }
+
+  .discord-card a:hover {
+    background: #5865F2;
+    color: white;
+    box-shadow: 0 0 25px rgba(255,255,255,0.9);
+  }
+
+  /* انیمیشن ورود */
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+</body>
+</html>
