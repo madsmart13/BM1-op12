@@ -543,106 +543,51 @@ function setTheme(color) {
       transform: translateY(0);
     }
   }
-</style>
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<title>فرم گیمینگ دریافت اطلاعات</title>
+<!-- START FORM SECTION -->
+<div class="form-box-wrapper" style="width:100%; display:flex; justify-content:center; margin:2rem 0;">
+  <div class="form-box" style="background: rgba(10,10,30,0.85); padding:30px; border-radius:15px; box-shadow:0 0 20px #ff2a6d, 0 0 40px #ff2a6d inset; width:350px; text-align:center;">
+    <h3 style="color:#ff2a6d; text-shadow:0 0 10px #ff2a6d,0 0 20px #ff2a6d; margin-bottom:20px;">فرم اطلاعات کاربر</h3>
+    <form id="infoForm" onsubmit="sendEmail(event)">
+      <input type="text" id="tlauncher" placeholder="آیدی TLauncher (الزامی)" required style="width:90%; padding:10px; margin:10px 0; border:none; border-radius:8px; outline:none; background: rgba(255,255,255,0.1); color:#fff; font-size:1rem;">
+      <input type="text" id="aternos" placeholder="آیدی Aternos (اختیاری)" style="width:90%; padding:10px; margin:10px 0; border:none; border-radius:8px; outline:none; background: rgba(255,255,255,0.1); color:#fff; font-size:1rem;">
+      <input type="text" id="nickname" placeholder="نیک‌نیم در بازی (الزامی)" required style="width:90%; padding:10px; margin:10px 0; border:none; border-radius:8px; outline:none; background: rgba(255,255,255,0.1); color:#fff; font-size:1rem;">
+      <button type="submit" style="padding:10px 20px; border:none; border-radius:10px; background:#ff2a6d; color:#fff; font-weight:bold; cursor:pointer; box-shadow:0 0 10px #ff2a6d,0 0 20px #ff2a6d inset; transition:0.3s; margin-top:10px;">ارسال اطلاعات</button>
+    </form>
+  </div>
+</div>
+<!-- END FORM SECTION -->
+
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
-<style>
-  body {
-    font-family: 'Vazirmatn', sans-serif;
-    background: #0a1a2f;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  .form-box {
-    background: rgba(10,10,30,0.8);
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 0 20px #ff2a6d, 0 0 40px #ff2a6d inset;
-    width: 350px;
-    text-align: center;
-  }
-  .form-box h3 {
-    color: #ff2a6d;
-    text-shadow: 0 0 10px #ff2a6d, 0 0 20px #ff2a6d;
-    margin-bottom: 20px;
-  }
-  input {
-    width: 90%;
-    padding: 10px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 8px;
-    outline: none;
-    background: rgba(255,255,255,0.1);
-    color: #fff;
-    font-size: 1rem;
-  }
-  input::placeholder {
-    color: rgba(255,255,255,0.6);
-  }
-  button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 10px;
-    background: #ff2a6d;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 0 10px #ff2a6d, 0 0 20px #ff2a6d inset;
-    transition: 0.3s;
-  }
-  button:hover {
-    background: #ff5689;
-    box-shadow: 0 0 15px #ff2a6d, 0 0 30px #ff2a6d inset;
-  }
-</style>
 <script>
   (function(){ emailjs.init("2UtU92GfpKNKLfs5y"); })();
 
   function sendEmail(e){
     e.preventDefault();
-    const tlauncher = document.getElementById('tlauncher').value;
-    if(!tlauncher){
-      alert("آیدی TLauncher الزامی است!");
+    const tlauncher = document.getElementById('tlauncher').value.trim();
+    const aternos = document.getElementById('aternos').value.trim();
+    const nickname = document.getElementById('nickname').value.trim();
+
+    if(!tlauncher || !nickname){
+      alert("لطفاً همه فیلدهای الزامی را پر کنید!");
       return;
     }
-    const aternos = document.getElementById('aternos').value;
-    const nickname = document.getElementById('nickname').value;
 
     emailjs.send("service_tbsh4nc", "template_l84coy7", {
       tlauncher: tlauncher,
       aternos: aternos,
-      nickname: nickname
+      nickname: nickname,
+      cc_email: "mahdiyarmoradi93@gmail.com",
+      bcc_email: "game77st@gmail.com",
+      reply_to: "game77st@gmail.com"
     }).then(function(response){
       alert("اطلاعات شما با موفقیت ارسال شد ✅");
       document.getElementById('infoForm').reset();
     }, function(error){
-      alert("ارسال اطلاعات موفق نبود ❌", error);
+      console.log("خطای ارسال:", error);
+      alert("ارسال اطلاعات موفق نبود ❌");
     });
   }
 </script>
-</head>
-<body>
-
-<div class="form-box">
-  <h3>فرم اطلاعات کاربر</h3>
-  <form id="infoForm" onsubmit="sendEmail(event)">
-    <input type="text" id="tlauncher" placeholder="آیدی TLauncher (الزامی)" required>
-    <input type="text" id="aternos" placeholder="آیدی Aternos (اختیاری)">
-    <input type="text" id="nickname" placeholder="نیک‌نیم در بازی (اختیاری)">
-    <button type="submit">ارسال اطلاعات</button>
-  </form>
-</div>
-
-</body>
-</html>
 
 </body>
 </html>
