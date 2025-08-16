@@ -56,7 +56,6 @@
     box-shadow: 0 0 10px #00bfff;
   }
 
-  /* دکمه‌ها */
   .btn {
     background: linear-gradient(45deg, #0055aa, #00bfff);
     border: none;
@@ -84,9 +83,7 @@
     animation: shine 0.7s forwards;
   }
 
-  @keyframes shine {
-    to { left: 150%; }
-  }
+  @keyframes shine { to { left: 150%; } }
 
   /* منوی کناری */
   .sidebar {
@@ -120,6 +117,7 @@
     border-radius: 10px;
     box-shadow: 0 0 15px #004080;
     animation: fadeIn 0.5s ease-in-out;
+    margin: 1rem;
   }
 
   @keyframes fadeIn {
@@ -127,11 +125,6 @@
     to {opacity: 1; transform: translateY(0);}
   }
 
-  .status-green { color: #00ff99; font-weight: bold; text-shadow: 0 0 5px #00ff99; }
-  .status-red { color: #ff4d4d; font-weight: bold; text-shadow: 0 0 5px #ff4d4d; }
-  .status-yellow { color: #ffff66; font-weight: bold; text-shadow: 0 0 5px #ffff66; }
-
-  /* فیلدهای فرم راه‌اندازی سرور */
   .server-input {
     width: 90%;
     padding: 0.6rem;
@@ -147,7 +140,6 @@
     box-shadow: 0 0 10px #00bfff;
   }
 
-  /* لیست یوزر ادمین */
   .admin-list {
     margin-top: 10px;
   }
@@ -168,7 +160,6 @@
     cursor: pointer;
   }
 
-  /* پیام خطا وسط صفحه */
   .overlay {
     position: fixed;
     top: 0; left: 0; right:0; bottom:0;
@@ -193,13 +184,75 @@
     to { transform: translateY(0); opacity: 1; }
   }
 
+  /* فرم EmailJS */
+  .emailjs-form {
+    background: rgba(0,0,0,0.4);
+    padding: 1.5rem;
+    border-radius: 12px;
+    max-width: 400px;
+    margin: 2rem auto;
+    box-shadow: 0 0 20px #00bfff;
+    text-align: center;
+  }
+  .emailjs-form input {
+    width: 90%;
+    padding: 0.6rem;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    border: none;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    box-shadow: inset 0 0 5px #00bfff;
+    font-size: 1rem;
+  }
+  .emailjs-form button { margin-top: 10px; }
+  .form-status { margin-top: 10px; font-weight: bold; min-height: 1.2rem; }
+
+  /* کارت دیسکورد */
+  .discord-box {
+    display: flex;
+    justify-content: center;
+    margin: 3rem 0;
+  }
+  .discord-card {
+    background: linear-gradient(135deg, #5865F2, #4e5bd9);
+    border-radius: 20px;
+    padding: 2rem 3rem;
+    box-shadow: 0 0 25px rgba(88, 101, 242, 0.8);
+    text-align: center;
+    max-width: 400px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .discord-card h2 { color: white; margin-bottom: 1rem; font-size: 1.5rem; }
+  .discord-card p { color: #e0e0ff; margin-bottom: 1.5rem; }
+  .discord-card a {
+    display: inline-block;
+    padding: 14px 28px;
+    background: white;
+    color: #5865F2;
+    font-weight: bold;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    box-shadow: 0 0 20px rgba(255,255,255,0.6);
+    transition: all 0.3s ease;
+  }
+  .discord-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 40px rgba(88, 101, 242, 1);
+  }
+  .discord-card a:hover {
+    background: #5865F2;
+    color: white;
+    box-shadow: 0 0 25px rgba(255,255,255,0.9);
+  }
 </style>
 </head>
 <body>
 
 <header> -BM1- </header>
 
-<!-- فرم ثبت نام -->
+<!-- فرم اصلی بالای پنل -->
 <div class="top-form">
   <input type="text" id="username" placeholder="نام کاربری">
   <input type="email" id="email" placeholder="ایمیل">
@@ -219,22 +272,18 @@
 
 <!-- محتوای پنل‌ها -->
 <div class="content">
-
-  <!-- اطلاعات کاربر -->
   <div id="infoPanel" class="panel">
     <h2>اطلاعات وارد شده</h2>
     <p>نام کاربری: <span id="displayUsername">-</span></p>
     <p>ایمیل: <span id="displayEmail">-</span></p>
   </div>
 
-  <!-- پنل پینگ -->
   <div id="pingPanel" class="panel">
     <h2>پینگ شما</h2>
     <button class="btn" onclick="showPing()">دریافت پینگ</button>
     <p id="pingResult">-</p>
   </div>
 
-  <!-- وضعیت سرورها -->
   <div id="serverStatusPanel" class="panel">
     <h2>وضعیت سرورها</h2>
     <div>
@@ -248,7 +297,6 @@
     </div>
   </div>
 
-  <!-- فرم راه‌اندازی سرور -->
   <div id="serverSetupPanel" class="panel">
     <h2>فرم راه‌اندازی سرور</h2>
     <input class="server-input" placeholder="نام سرور" id="serverName"><br>
@@ -267,7 +315,6 @@
     <button class="btn" onclick="showServerError()">ادامه</button>
   </div>
 
-  <!-- تغییر رنگ -->
   <div id="themePanel" class="panel">
     <h2>تغییر تم</h2>
     <button class="btn" onclick="setTheme('#0a1a2f')">🔵 آبی تیره</button>
@@ -275,105 +322,19 @@
     <button class="btn" onclick="setTheme('#333333')">⚫ خاکستری تیره</button>
   </div>
 
+  <!-- فرم EmailJS -->
+  <div class="emailjs-form panel" id="emailjsPanel">
+    <h2>ثبت اطلاعات کاربر</h2>
+    <input type="text" id="tlauncherId" placeholder="ID تی لانچر (الزامی)" required><br>
+    <input type="text" id="nickname" placeholder="Nickname در بازی (الزامی)" required><br>
+    <input type="text" id="aternosId" placeholder="ID اترنوس (اختیاری)"><br>
+    <button class="btn" onclick="sendEmail()">ارسال اطلاعات</button>
+    <div class="form-status" id="formStatus"></div>
+  </div>
+
 </div>
 
 <!-- پیام وسط صفحه -->
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<title>پنل مدیریت سرور</title>
-<style>
-  body {
-    background: #0d1117;
-    color: #fff;
-    font-family: 'Vazirmatn', sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-
-  /* پیام خطا (Overlay) */
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.75);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-  }
-  .overlay-content {
-    background: #1e1e1e;
-    padding: 30px;
-    border-radius: 12px;
-    font-size: 1.3rem;
-    box-shadow: 0 0 20px rgba(255,255,255,0.15);
-    position: relative;
-    text-align: center;
-    max-width: 90%;
-  }
-  .overlay-close{
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    width: 40px;
-    height: 40px;
-    border: none;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.08);
-    color: #fff;
-    font-size: 1.1rem;
-    cursor: pointer;
-    backdrop-filter: blur(2px);
-    box-shadow: 0 0 12px rgba(255,255,255,0.2);
-    transition: transform .2s ease, box-shadow .2s ease;
-  }
-  .overlay-close:hover{
-    transform: scale(1.1);
-    box-shadow: 0 0 18px rgba(255,255,255,0.35);
-  }
-
-  /* دکمه‌ها */
-  button {
-    background: linear-gradient(90deg,#ff2a6d,#ff7a2a);
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: 0.3s ease;
-  }
-  button:hover {
-    box-shadow: 0 0 15px rgba(255,255,255,0.3);
-    transform: scale(1.05);
-  }
-
-  /* دکمه سرور دیسکورد */
-  .discord-btn {
-    display: block;
-    width: fit-content;
-    margin: 30px auto;
-    background: linear-gradient(90deg,#5865F2,#3b4cbb);
-    color: #fff;
-    text-decoration: none;
-    padding: 12px 25px;
-    border-radius: 10px;
-    font-size: 1rem;
-    transition: 0.3s ease;
-  }
-  .discord-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(88,101,242,0.5);
-  }
-</style>
-</head>
-<body>
-
-<!-- پیام ارور -->
 <div class="overlay" id="overlay">
   <button class="overlay-close" onclick="closeOverlay()" aria-label="بستن">✖</button>
   <div class="overlay-content">
@@ -381,25 +342,19 @@
   </div>
 </div>
 
-<!-- بخش‌های اصلی -->
-<h1 style="text-align:center;margin-top:40px;">پنل مدیریت سرور</h1>
+<!-- کارت دیسکورد -->
+<section class="discord-box">
+  <div class="discord-card">
+    <h2>💬 به دیسکورد ما بپیوندید</h2>
+    <p>برای گفتگو و ارتباط مستقیم با اعضا وارد سرور دیسکورد شوید.</p>
+    <a href="https://discord.gg/kYxdvnTKe6" target="_blank">🚀 عضویت در دیسکورد</a>
+  </div>
+</section>
 
-<!-- دکمه سرور دیسکورد -->
-<a class="discord-btn" href="https://discord.gg/kYxdvnTKe6" target="_blank">سرور دیسکورد</a>
-
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
-  function closeOverlay(){
-    document.getElementById('overlay').style.display = 'none';
-  }
+emailjs.init("2UtU92GfpKNKLfs5y"); // Public Key
 
-  // تست نمایش ارور
-  // document.getElementById('overlay').style.display = 'flex';
-</script>
-
-</body>
-</html>
-
-<script>
 function showPanel(panelId) {
   document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
   document.getElementById(panelId).style.display = 'block';
@@ -409,10 +364,7 @@ function registerUser() {
   let user = document.getElementById('username').value.trim();
   let email = document.getElementById('email').value.trim();
   let pass = document.getElementById('password').value.trim();
-  if (!user || !email || !pass) {
-    alert("لطفا همه فیلدها را پر کنید");
-    return;
-  }
+  if (!user || !email || !pass) { alert("لطفا همه فیلدها را پر کنید"); return; }
   document.getElementById('displayUsername').textContent = user;
   document.getElementById('displayEmail').textContent = email;
   alert("ثبت‌نام با موفقیت انجام شد!");
@@ -433,9 +385,7 @@ function connectServer(num) {
   resetServers();
   if (num === 1) {
     document.getElementById('server1Status').innerHTML = '<span class="status-green">در حال اتصال...</span>';
-    setTimeout(() => {
-      document.getElementById('server1Status').innerHTML = '<span class="status-red">اتصال قطع شد</span>';
-    }, 2000);
+    setTimeout(() => { document.getElementById('server1Status').innerHTML = '<span class="status-red">اتصال قطع شد</span>'; }, 2000);
   }
   if (num === 2) {
     document.getElementById('server2Status').innerHTML = '<span class="status-red">اتصال قطع شد</span>';
@@ -455,150 +405,31 @@ function addAdmin() {
   document.getElementById('adminUser').value = "";
 }
 
-function showServerError() {
-  document.getElementById('overlay').style.display = 'flex';
-}
+function showServerError() { document.getElementById('overlay').style.display = 'flex'; }
+function closeOverlay(){ document.getElementById('overlay').style.display = 'none'; }
+function setTheme(color){ document.body.style.backgroundColor = color; }
 
-function setTheme(color) {
-  document.body.style.backgroundColor = color;
+// ارسال فرم EmailJS
+function sendEmail() {
+  const tlauncherId = document.getElementById('tlauncherId').value.trim();
+  const nickname = document.getElementById('nickname').value.trim();
+  const aternosId = document.getElementById('aternosId').value.trim();
+
+  if (!tlauncherId || !nickname) {
+    document.getElementById('formStatus').textContent = "لطفاً فیلدهای الزامی را پر کنید!";
+    return;
+  }
+
+  const templateParams = {
+    tlauncher_id: tlauncherId,
+    nickname: nickname,
+    aternos_id: aternosId
+  };
+
+  emailjs.send('service_tbsh4nc','template_l84coy7', templateParams)
+    .then(() => { document.getElementById('formStatus').textContent = "✅ اطلاعات با موفقیت ارسال شد!"; })
+    .catch(() => { document.getElementById('formStatus').textContent = "❌ ارسال اطلاعات موفق نبود"; });
 }
 </script>
-  
-<!-- بخش دیسکورد -->
-<section class="discord-box">
-  <div class="discord-card">
-    <h2>💬 به دیسکورد ما بپیوندید</h2>
-    <p>برای گفتگو و ارتباط مستقیم با اعضا وارد سرور دیسکورد شوید.</p>
-    <a href="https://discord.gg/kYxdvnTKe6" target="_blank">🚀 عضویت در دیسکورد</a>
-  </div>
-</section>
-
-<!-- استایل -->
-<style>
-  .discord-box {
-    display: flex;
-    justify-content: center;
-    margin: 3rem 0;
-  }
-
-  .discord-card {
-    background: linear-gradient(135deg, #5865F2, #4e5bd9);
-    border-radius: 20px;
-    padding: 2rem 3rem;
-    box-shadow: 0 0 25px rgba(88, 101, 242, 0.8);
-    text-align: center;
-    max-width: 400px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    opacity: 0;
-    transform: translateY(50px);
-    animation: fadeUp 1s ease forwards;
-  }
-
-  .discord-card h2 {
-    font-family: 'Vazirmatn', sans-serif;
-    color: white;
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-  }
-
-  .discord-card p {
-    font-family: 'Vazirmatn', sans-serif;
-    color: #e0e0ff;
-    margin-bottom: 1.5rem;
-  }
-
-  .discord-card a {
-    display: inline-block;
-    padding: 14px 28px;
-    background: white;
-    color: #5865F2;
-    font-weight: bold;
-    border-radius: 50px;
-    text-decoration: none;
-    font-family: 'Vazirmatn', sans-serif;
-    font-size: 1.1rem;
-    box-shadow: 0 0 20px rgba(255,255,255,0.6);
-    transition: all 0.3s ease;
-  }
-
-  .discord-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 40px rgba(88, 101, 242, 1);
-  }
-
-  .discord-card a:hover {
-    background: #5865F2;
-    color: white;
-    box-shadow: 0 0 25px rgba(255,255,255,0.9);
-  }
-
-  /* انیمیشن ورود */
-  @keyframes fadeUp {
-    from {
-      opacity: 0;
-      transform: translateY(50px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-<!-- START NEON USER INFO FORM -->
-<div id="neonUserForm" style="max-width:400px; margin:3rem auto; background: rgba(10,10,30,0.9); padding:30px; border-radius:15px; box-shadow:0 0 20px #ff2a6d,0 0 40px #ff2a6d inset; text-align:center; font-family:'Vazirmatn',sans-serif;">
-  <h3 style="color:#ff2a6d; text-shadow:0 0 10px #ff2a6d,0 0 20px #ff2a6d; margin-bottom:20px;">فرم اطلاعات کاربر</h3>
-  <input type="text" id="tlauncher" placeholder="آیدی TLauncher (الزامی)" required
-         style="width:90%; padding:10px; margin:10px 0; border:none; border-radius:8px; outline:none; background: rgba(255,255,255,0.1); color:#fff; font-size:1rem;">
-  <input type="text" id="aternos" placeholder="آیدی Aternos (اختیاری)"
-         style="width:90%; padding:10px; margin:10px 0; border:none; border-radius:8px; outline:none; background: rgba(255,255,255,0.1); color:#fff; font-size:1rem;">
-  <input type="text" id="nickname" placeholder="نیک‌نیم در بازی (الزامی)" required
-         style="width:90%; padding:10px; margin:10px 0; border:none; border-radius:8px; outline:none; background: rgba(255,255,255,0.1); color:#fff; font-size:1rem;">
-  <button id="sendUserInfoBtn"
-          style="padding:10px 20px; border:none; border-radius:10px; background:#ff2a6d; color:#fff; font-weight:bold; cursor:pointer; box-shadow:0 0 10px #ff2a6d,0 0 20px #ff2a6d inset; transition:0.3s; margin-top:10px;">
-    ارسال اطلاعات
-  </button>
-  <p id="formStatus" style="color:#fff; margin-top:10px;"></p>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
-<script>
-  emailjs.init("2UtU92GfpKNKLfs5y"); // Public Key
-
-  document.getElementById('sendUserInfoBtn').addEventListener('click', function() {
-    const tlauncher = document.getElementById('tlauncher').value.trim();
-    const aternos = document.getElementById('aternos').value.trim();
-    const nickname = document.getElementById('nickname').value.trim();
-    const statusEl = document.getElementById('formStatus');
-
-    if (!tlauncher || !nickname) {
-      statusEl.textContent = "لطفاً فیلدهای الزامی را پر کنید!";
-      statusEl.style.color = "#ff4d4d";
-      return;
-    }
-
-    statusEl.textContent = "در حال ارسال...";
-    statusEl.style.color = "#ffff66";
-
-    emailjs.send("service_tbsh4nc", "template_l84coy7", {
-      tlauncher: tlauncher,
-      aternos: aternos,
-      nickname: nickname,
-      cc_email: "mahdiyarmoradi93@gmail.com",
-      bcc_email: "game77st@gmail.com",
-      reply_to: "game77st@gmail.com"
-    }).then(function(response){
-      statusEl.textContent = "اطلاعات شما با موفقیت ارسال شد ✅";
-      statusEl.style.color = "#00ff99";
-      document.getElementById('tlauncher').value = "";
-      document.getElementById('aternos').value = "";
-      document.getElementById('nickname').value = "";
-    }, function(error){
-      console.error("خطای ارسال:", error);
-      statusEl.textContent = "ارسال اطلاعات موفق نبود ❌";
-      statusEl.style.color = "#ff4d4d";
-    });
-  });
-</script>
-<!-- END NEON USER INFO FORM -->
-
 </body>
 </html>
