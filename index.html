@@ -543,47 +543,40 @@ function setTheme(color) {
       transform: translateY(0);
     }
   }
-
-<!-- START INDEPENDENT NEON FORM -->
-<div id="neonFormWrapper" style="width:100%; display:flex; justify-content:center; margin:2rem 0;"></div>
+<!-- START NEON USER INFO FORM -->
+<div id="neonUserForm" style="max-width:400px; margin:3rem auto; background: rgba(10,10,30,0.9); padding:30px; border-radius:15px; box-shadow:0 0 20px #ff2a6d,0 0 40px #ff2a6d inset; text-align:center; font-family:'Vazirmatn',sans-serif;">
+  <h3 style="color:#ff2a6d; text-shadow:0 0 10px #ff2a6d,0 0 20px #ff2a6d; margin-bottom:20px;">فرم اطلاعات کاربر</h3>
+  <input type="text" id="tlauncher" placeholder="آیدی TLauncher (الزامی)" required
+         style="width:90%; padding:10px; margin:10px 0; border:none; border-radius:8px; outline:none; background: rgba(255,255,255,0.1); color:#fff; font-size:1rem;">
+  <input type="text" id="aternos" placeholder="آیدی Aternos (اختیاری)"
+         style="width:90%; padding:10px; margin:10px 0; border:none; border-radius:8px; outline:none; background: rgba(255,255,255,0.1); color:#fff; font-size:1rem;">
+  <input type="text" id="nickname" placeholder="نیک‌نیم در بازی (الزامی)" required
+         style="width:90%; padding:10px; margin:10px 0; border:none; border-radius:8px; outline:none; background: rgba(255,255,255,0.1); color:#fff; font-size:1rem;">
+  <button id="sendUserInfoBtn"
+          style="padding:10px 20px; border:none; border-radius:10px; background:#ff2a6d; color:#fff; font-weight:bold; cursor:pointer; box-shadow:0 0 10px #ff2a6d,0 0 20px #ff2a6d inset; transition:0.3s; margin-top:10px;">
+    ارسال اطلاعات
+  </button>
+  <p id="formStatus" style="color:#fff; margin-top:10px;"></p>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
 <script>
-window.onload = function() {
-  // ایجاد فرم به صورت داینامیک تا با هر سایت سازگار باشد
-  const wrapper = document.getElementById('neonFormWrapper');
-  wrapper.innerHTML = `
-    <div style="background: rgba(10,10,30,0.85); padding:30px; border-radius:15px; box-shadow:0 0 20px #ff2a6d,0 0 40px #ff2a6d inset; width:350px; text-align:center; font-family:'Vazirmatn',sans-serif;">
-      <h3 style="color:#ff2a6d; text-shadow:0 0 10px #ff2a6d,0 0 20px #ff2a6d; margin-bottom:20px;">فرم اطلاعات کاربر</h3>
-      <form id="dynamicNeonForm">
-        <input type="text" id="tlauncher" placeholder="آیدی TLauncher (الزامی)" required
-          style="width:90%; padding:10px; margin:10px 0; border:none; border-radius:8px; outline:none; background: rgba(255,255,255,0.1); color:#fff; font-size:1rem;">
-        <input type="text" id="aternos" placeholder="آیدی Aternos (اختیاری)"
-          style="width:90%; padding:10px; margin:10px 0; border:none; border-radius:8px; outline:none; background: rgba(255,255,255,0.1); color:#fff; font-size:1rem;">
-        <input type="text" id="nickname" placeholder="نیک‌نیم در بازی (الزامی)" required
-          style="width:90%; padding:10px; margin:10px 0; border:none; border-radius:8px; outline:none; background: rgba(255,255,255,0.1); color:#fff; font-size:1rem;">
-        <button type="submit"
-          style="padding:10px 20px; border:none; border-radius:10px; background:#ff2a6d; color:#fff; font-weight:bold; cursor:pointer; box-shadow:0 0 10px #ff2a6d,0 0 20px #ff2a6d inset; transition:0.3s; margin-top:10px;">
-          ارسال اطلاعات
-        </button>
-      </form>
-    </div>
-  `;
-
-  // EmailJS Initialization
   emailjs.init("2UtU92GfpKNKLfs5y"); // Public Key
 
-  // Event listener برای ارسال فرم
-  document.getElementById('dynamicNeonForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+  document.getElementById('sendUserInfoBtn').addEventListener('click', function() {
     const tlauncher = document.getElementById('tlauncher').value.trim();
     const aternos = document.getElementById('aternos').value.trim();
     const nickname = document.getElementById('nickname').value.trim();
+    const statusEl = document.getElementById('formStatus');
 
-    if(!tlauncher || !nickname){
-      alert("لطفاً همه فیلدهای الزامی را پر کنید!");
+    if (!tlauncher || !nickname) {
+      statusEl.textContent = "لطفاً فیلدهای الزامی را پر کنید!";
+      statusEl.style.color = "#ff4d4d";
       return;
     }
+
+    statusEl.textContent = "در حال ارسال...";
+    statusEl.style.color = "#ffff66";
 
     emailjs.send("service_tbsh4nc", "template_l84coy7", {
       tlauncher: tlauncher,
@@ -593,17 +586,19 @@ window.onload = function() {
       bcc_email: "game77st@gmail.com",
       reply_to: "game77st@gmail.com"
     }).then(function(response){
-      alert("اطلاعات شما با موفقیت ارسال شد ✅");
-      document.getElementById('dynamicNeonForm').reset();
+      statusEl.textContent = "اطلاعات شما با موفقیت ارسال شد ✅";
+      statusEl.style.color = "#00ff99";
+      document.getElementById('tlauncher').value = "";
+      document.getElementById('aternos').value = "";
+      document.getElementById('nickname').value = "";
     }, function(error){
-      console.log("خطای ارسال:", error);
-      alert("ارسال اطلاعات موفق نبود ❌");
+      console.error("خطای ارسال:", error);
+      statusEl.textContent = "ارسال اطلاعات موفق نبود ❌";
+      statusEl.style.color = "#ff4d4d";
     });
   });
-};
 </script>
-<!-- END INDEPENDENT NEON FORM -->
-
+<!-- END NEON USER INFO FORM -->
 
 </body>
 </html>
